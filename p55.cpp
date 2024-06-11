@@ -1,66 +1,125 @@
 #include <iostream>
-#include <cstring>
+#include <string>
+
 using namespace std;
-int main(){
-  string admin[20];
-  string user[20];
-  string anonimo[20];
 
-  stirng name[20];//nombe anonimo
-  string root[] = "admin";
-  string pass_ad[] = "1234";//esta es la contraseañ del admin
-  string user,user_password;
-  string user_identificador[]=user;
-  string pass_usuario[]=user_password;
-  char s;
+class Usuario {
+private:
+    string nombre;
+    string correo;
+    string contrasena;
 
+public:
+    Usuario(string nombre, string correo, string contrasena) : nombre(nombre), correo(correo), contrasena(contrasena) {}
 
-  cout<<"ingresa tu tipo de usuario";
-  switch(int type){
-    cin >> type;
-    case 1://usuario
-      cout<<"ingresa tu nombre de usuario";
-      cin >> user;
-      cout<<"Ingresa tu contraseña: ";
-      cin>> user_password;
-      break;
-    case 2://admin
-      cout << "Ingresa tu nombre: " << endl;
-      cin >> admin;
+    string getNombre() const { return nombre; }
+    string getCorreo() const { return correo; }
+    string getContrasena() const { return contrasena; }
 
-      cout << "Ingresa la contraseña" << endl;
-      cin >> password;
-      if ((strmpc(user,admin)==0)&&(strcmp(pass,1234)){
-      cout<<"Bienvenido Administrador "<<endl
-      cout<<"Tienes las siguientes ventajas: "<<endl;
-      cout<<"1.Modificar mis datos personales\n";
-      cout<<"2.Mostrar mis vendedores recomendados\n";
-       cout<<"3.Recomendar a un vendedor\n";
-        cout<<"4.Mostrar todos los vendedores recomendados por un usuario\n";
-        cout<<"5.Ver los productos ofrcidos por un vendedor\n";
-        cout<<"6. Mostrar todos los productos a la venta\n";
-        
-      
-    
-  }
+    void setNombre(string nombre) { this->nombre = nombre; }
+    void setCorreo(string correo) { this->correo = correo; }
+    void setContrasena(string contrasena) { this->contrasena = contrasena; }
+};
 
-  if(strmpc(user,anonimo)==0){
-   cout<<"Ingresaste como anonimo";
-    cout<<"ingresa tu nombre en el que quieres acceder: ";
-    cin>>name;
-    cout<<"bienvenido al sistema "<<name;
-    cout<<"\n productos a la venta";
-    cout<<"\n pulsa s para salir";
-    cin>>s;
-    if(s==´s´){
-      break;
+class Producto {
+private:
+    string nombre;
+    double precio;
+
+public:
+    Producto(string nombre, double precio) : nombre(nombre), precio(precio) {}
+
+    string getNombre() const { return nombre; }
+    double getPrecio() const { return precio; }
+};
+
+class Anuncio {
+private:
+    Usuario vendedor;
+    Producto producto;
+
+public:
+    Anuncio(Usuario vendedor, Producto producto) : vendedor(vendedor), producto(producto) {}
+
+    Usuario getVendedor() const { return vendedor; }
+    Producto getProducto() const { return producto; }
+};
+
+void mostrarMenuAnonimo() {
+    cout << "1. Identificarse (login)" << endl;
+    cout << "2. Ver todos los productos a la venta" << endl;
+    cout << "0. Salir de la aplicación" << endl;
+}
+
+void mostrarMenuRegistrado() {
+    cout << "1. Modificar mis datos personales" << endl;
+    cout << "2. Mostrar mis vendedores recomendados" << endl;
+    cout << "3. Recomendar un vendedor" << endl;
+    cout << "4. Ver todos los productos a la venta" << endl;
+    cout << "5. Ver los productos de mis vendedores recomendados" << endl;
+    cout << "6. Valorar un producto" << endl;
+    cout << "7. Poner a la venta un producto" << endl;
+    cout << "8. Desconectarse (volver a anónimo)" << endl;
+    cout << "0. Salir de la aplicación" << endl;
+}
+
+void mostrarMenuAdmin() {
+    cout << "1. Dar de alta a un nuevo usuario" << endl;
+    cout << "2. Modificar los datos de un usuario" << endl;
+    cout << "3. Mostrar todos los usuarios" << endl;
+    cout << "4. Mostrar todos los vendedores recomendados por un usuario" << endl;
+    cout << "5. Ver los productos ofrecidos por un vendedor" << endl;
+    cout << "6. Mostrar todos los productos a la venta" << endl;
+    cout << "7. Desconectarse (volver a anónimo)" << endl;
+    cout << "0. Salir de la aplicación" << endl;
+}
+
+Usuario* login(const Usuario& usuario) {
+    string correo, contrasena;
+    cout << "Ingrese su correo electrónico: ";
+    cin >> correo;
+    cout << "Ingrese su contraseña: ";
+    cin >> contrasena;
+
+    if (usuario.getCorreo() == correo && usuario.getContrasena() == contrasena) {
+        return new Usuario(usuario);
+    } else {
+        cout << "Credenciales incorrectas. Por favor, inténtelo de nuevo." << endl;
+        return nullptr;
     }
-    
-    
-  }
-  if(strcmp(user,user) == 0){
-    cout<<"Bienvenido Usuario "<<endl
-    cout<<"Bienvenido Administrador "<<endl
-    } 
-      }
+}
+
+int main() {
+    Usuario admin("admin", "admin@admin.com", "admin123");
+
+    int opcion;
+    do {
+        cout << "\nBienvenido a la plataforma de anuncios de productos de segunda mano." << endl;
+        cout << "Seleccione su tipo de usuario:" << endl;
+        cout << "1. Usuario anónimo" << endl;
+        cout << "2. Usuario registrado" << endl;
+        cout << "3. Usuario administrador" << endl;
+        cout << "0. Salir de la aplicación" << endl;
+        cout << "Opción: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1:
+                mostrarMenuAnonimo();
+                break;
+            case 2:
+                mostrarMenuRegistrado();
+                break;
+            case 3:
+                mostrarMenuAdmin();
+                break;
+            case 0:
+                cout << "Saliendo de la aplicación..." << endl;
+                break;
+            default:
+                cout << "Opción no válida. Por favor, seleccione una opción válida." << endl;
+        }
+    } while (opcion != 0);
+
+    return 0;
 }
